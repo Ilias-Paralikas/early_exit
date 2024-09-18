@@ -1,4 +1,3 @@
-from ..deploy_early_exit import EarlyExitNetworkSegmentor
 from ..train_early_exit import EarlyExitNet,train_early_exit_network,test_all_exits_accuracy,seperate_networks
 
 
