@@ -5,9 +5,9 @@ How to Use:
 2. Define a class that splits your model into nn.Sequentail Subbolocks that, in turn all belong to an nn.Sequential Container, named "self.net" (see demo.ipynb, SplitModel class)
 
 3. Define the parameters the following parameters 
-    * input_shape
+    * input_shape          
     * thresholds 
-    neurons_in_exit_layers
+    * neurons_in_exit_layers
     epochs 
     train_dataloader
     test_dataloader
@@ -15,3 +15,13 @@ How to Use:
     optimizer_parameters 
     criterion
     training_method 
+
+# My Project
+
+## Features
+
+| Feature       | Description                        |
+| ------------- | ---------------------------------- |
+| Easy to use   | Simple and intuitive interface     |
+| Fast          | Optimized for performance          |
+| Customizable  | Highly configurable and flexible   |
