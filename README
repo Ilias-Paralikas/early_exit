@@ -5,7 +5,7 @@ How to Use:
 2. Define a class that splits your model into nn.Sequentail Subbolocks that, in turn all belong to an nn.Sequential Container, named "self.net" (see demo.ipynb, SplitModel class)
 
 3. Define the parameters the following parameters 
-  | Parameter               | Type                                    | Description                                                               |
+| Parameter               | Type                                    | Description                                                               |
 |-------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
 | `model`                 | Split Model                               | The split model as defined in step 2
 | `input_shape`           | Tuple                                     | Shape of the input data (e.g., `(1, 3, 32, 32)`).                           |
