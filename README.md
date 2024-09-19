@@ -10,7 +10,7 @@ The function to be exposed is import as follows
 as used as such
 How to Use:
 
-1. Define you model (optinal train it on your dataset)
+1. Define your model (optinal train it on your dataset)
 
 2. Define a class that splits your model into nn.Sequentail Subbolocks that, in turn all belong to an nn.Sequential Container, named "self.net" (see demo.ipynb, SplitModel class)
 
