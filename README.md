@@ -32,6 +32,6 @@ If an integer is passed as a parameter, it will train the exit specified. Obviou
 Returns 
 | Parameter               | Type                                      | Description                                                                 |
 |-------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
-| `networks`                 | `List of nn.Module `                      | A list of the seperated parts of the network                                    |
+| `networks`                 | `List of EarlyExitNetworkSegmentor instances `                      | A list of the seperated parts of the network                                    |
 | `train_losses`           | `List   `                                  | List of the training loss                         |
 | `test_accuracies`            | `List of strings    `                        | the accuracies after training              |
