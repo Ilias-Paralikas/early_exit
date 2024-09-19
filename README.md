@@ -24,9 +24,9 @@ How to Use:
 NOTE on training method.
 
 
-The whole network option will train the whole network as well as the exits
-the all_exits option will train ONLY the added exits (works well for pretrained networks that we don't want to hurt the performance of the body)
-If an integer is passed as a parameter, it will train the exit specified. Obviously, the number must not exceed the number of exits.
+ * The `whole_network` option will train the whole network as well as the exits
+ * The `all_exits` option will train ONLY the added exits (works well for pretrained networks that we don't want to hurt the performance of the body)
+ * If an integer is provided as a parameter, it will train the exit specified. Obviously, the number must not exceed the number of exits.
 
 
 Returns 
