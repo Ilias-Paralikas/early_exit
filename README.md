@@ -29,7 +29,7 @@ How to Use:
 | `optimizer`             | `torch.optim`                       | Optimization algorithm for training(e.g., `torch.optim.SGD`)                |
 | `optimizer_parameters`  | `dict`                                | Parameters to configure the optimizer (e.g., `{'lr': 0.001}`).              |
 | `criterion`             | `torch.nn `                            | Loss function to train the model .(e.g.,`torch.nn.CrossEntropyLoss()`)      |
-| `training_method`       | `String` or `Integer`                         | Method of training (`'whole_network'`, `'all_exits'`, or one exit layer)    |
+| `training_method`       | `String` or `Integer`                         | Method of training (`'whole_network'`, `'all_exits'`, or int)    |
 
 NOTE on training method.
 
