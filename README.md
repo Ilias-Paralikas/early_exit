@@ -18,7 +18,7 @@ How to Use:
 | `test_dataloader`       | `torch.utils.data.DataLoader`             | DataLoader for test data.                                                   |
 | `optimizer`             | `torch.optim`                       | Optimization algorithm for training(e.g., `torch.optim.SGD`)                |
 | `optimizer_parameters`  | `dict`                                | Parameters to configure the optimizer (e.g., `{'lr': 0.001}`).              |
-| `criterion`             | `Loss function `                            | Loss function to train the model .(e.g.,`torch.nn.CrossEntropyLoss()`)      |
+| `criterion`             | `torch.nn `                            | Loss function to train the model .(e.g.,`torch.nn.CrossEntropyLoss()`)      |
 | `training_method`       | `String` or `Integer`                         | Method of training (`'whole_network'`, `'all_exits'`, or one exit layer)    |
 
 NOTE on training method.
