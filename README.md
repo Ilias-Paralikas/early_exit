@@ -27,3 +27,11 @@ NOTE on training method.
 The whole network option will train the whole network as well as the exits
 the all_exits option will train ONLY the added exits (works well for pretrained networks that we don't want to hurt the performance of the body)
 If an integer is passed as a parameter, it will train the exit specified. Obviously, the number must not exceed the number of exits.
+
+
+Returns 
+| Parameter               | Type                                      | Description                                                                 |
+|-------------------------|-------------------------------------------|-----------------------------------------------------------------------------|
+| `networks`                 | `List of nn.Module `                      | A list of the seperated parts of the network                                    |
+| `train_losses`           | `List   `                                  | List of the training loss                         |
+| `test_accuracies`            | `List of strings    `                        | the accuracies after training              |
