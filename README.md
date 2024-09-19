@@ -14,7 +14,7 @@ How to Use:
 
 2. Define a class that splits your model into nn.Sequentail Subbolocks that, in turn all belong to an nn.Sequential Container, named "self.net" (see demo.ipynb, SplitModel class)
 
-3. Define the following parameters 
+3. Call the function with the following parameters 
 
 
 | Parameter               | Type                                      | Description                                                                 |
