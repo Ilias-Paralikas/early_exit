@@ -4,7 +4,8 @@ This work was partially support by the ``Trustworthy And Resilient Decentralised
 
 The function to be exposed is import as follows
 
-from knowledge_distilation import knowledge_distillation_train
+
+`from early_exit.get_early_exit import create_networks`
 
 as used as such
 How to Use:
