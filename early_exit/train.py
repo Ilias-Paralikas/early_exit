@@ -20,7 +20,7 @@ def train_model(model,loader,criterion,optimizer,epochs=1,exit_chosen=None,devic
 
             if exit_chosen is None:
     
-                labels = labels.unsqueeze(1).repeat(1, repeat, 1)  # Repeat along new dimension
+                labels = labels.unsqueeze(1).repeat(1, num_exits, 1)  # Repeat along new dimension
                 labels = labels.view(-1,num_exits*num_classes)
                 output =output.view(-1,num_exits*num_classes)
             labels = labels.to(device)
