@@ -10,14 +10,13 @@ class EarlyExitNetwork(nn.Module):
     '''
     
     '''
-    def __init__(self,separated_network,exit_layers,thresholds,device=None):
+    def __init__(self,separated_network,exit_layers,device=None):
         super(EarlyExitNetwork, self).__init__()
         
         assert len(exit_layers) == len(separated_network)-1
         if device is None:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
-        self.thresholds  = thresholds
         self.network = deepcopy(separated_network).to(device)
         
 
