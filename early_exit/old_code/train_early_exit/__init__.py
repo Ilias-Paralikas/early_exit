@@ -2,91 +2,10 @@ import torch
 import torch.nn as nn
 import numpy as np
 from ..deploy_early_exit import EarlyExitNetworkSegmentor
+from ..utils import get_confidence_function
+from copy import deepcopy
 
 
-
-
-def softmax_temperature(logits, temperature=1):
-    logits = logits / temperature
-    return torch.softmax(logits, dim=0)
-
-
-class EarlyExitNet(nn.Module):
-    def __init__(self,network,input_shape,thresholds,neurons_in_exit_layers = [[1024,1024],[1024,1024]],scaler=None):
-        def get_output_flattened( network, input_shape,device):
-            x = torch.rand(input_shape).to(device)  # Add the batch size dimension here
-            return network(x).view(x.size(0), -1).size(1)
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        super(EarlyExitNet, self).__init__()  
-        self.thresholds  = thresholds
-        self.network = network.to(device)
-        x = torch.rand(input_shape).to(device)
-        
-        if isinstance(neurons_in_exit_layers,int):
-            layers  =  neurons_in_exit_layers
-            neurons_in_exit_layers = [[layers] for _ in range(len(network)-1)]
-        self.output_shape  =  network(x).size(1)
-        
-        self.len = len(network)
-        assert len(neurons_in_exit_layers) == len(network)-1
-
-        self.exits = nn.ModuleList([])
-        for i, net in enumerate(network[:-1]):
-            layers = [nn.Flatten()]
-            last_layer_size  = get_output_flattened(net,input_shape,device)
-            for next_layer_size in neurons_in_exit_layers[i]:
-                  
-                layers.append(nn.Linear(last_layer_size, next_layer_size))
-                layers.append(nn.ReLU())
-                last_layer_size = next_layer_size
-            layers.append(nn.Linear(last_layer_size, self.output_shape))
-            
-            input_shape  = net(torch.rand(input_shape).to(device)).size()
-        
-            self.exits.append(nn.Sequential(*layers).to(device))
-            
-        
-        if scaler is None:
-            self.scaler  = softmax_temperature
-        else:   
-            self.scaler = scaler
-                    
-    def forward(self,x):
-        outputs =[]
-        for i in range(self.len-1):
-            x = self.network[i](x)
-            early_exit = self.exits[i](x)
-            early_exit = self.scaler(early_exit)
-            outputs.append(early_exit)
-            
-        x = self.network[-1](x)
-        outputs.append(x)
-        return outputs
-    def segmented_forward(self,x):
-        x=  x.unsqueeze(0)
-        for i in range(self.len-1):
-            x = self.network[i](x)
-            early_exit = self.exits[i](x)
-            early_exit= early_exit.squeeze(0)
-            early_exit = self.scaler(early_exit)
-            
-            if early_exit.max() > self.thresholds[i]:
-                return early_exit,i
-
-        x = self.network[-1](x)
-        x = x.squeeze(0)
-        return x,i+1
-    
-    def specific_exit_forward(self,x,exit):
-        assert exit<=self.len-1
-        x = self.network[0](x)
-        for j in range(exit):
-            x = self.network[j+1](x)
-        if exit <self.len-1:
-            x = self.exits[exit](x)
-        return x
-
-    
   
 def train_early_exit_network(  model,
             epochs,
@@ -215,9 +134,9 @@ def segmented_test_accuracy(model, dataloader):
        
 def seperate_networks(eenet):
     segmented_networks =[]
-    scaler  = eenet.scaler
+    confidence_function  = eenet.confidence_function
     for i in range((len(eenet.network)-1)):
-        network = EarlyExitNetworkSegmentor(eenet.network[i],eenet.exits[i],eenet.thresholds[i],scaler)
+        network = EarlyExitNetworkSegmentor(eenet.network[i],eenet.exits[i],eenet.thresholds[i],confidence_function)
         segmented_networks.append(network)
     network  = EarlyExitNetworkSegmentor(eenet.network[-1]).to('cpu')
     segmented_networks.append(network)
