@@ -4,9 +4,9 @@ import copy
 
 
 
-class EarlyExitNetworkSegmentor(nn.Module):
+class SegmentedEarlyExitNetwork(nn.Module):
         def __init__(self,network,exit=None,threshold=None,confidence_function=None):
-            super(EarlyExitNetworkSegmentor, self).__init__()
+            super(SegmentedEarlyExitNetwork, self).__init__()
             self.network = copy.deepcopy(network)
             self.exit = copy.deepcopy(exit)
             self.threshold = threshold
@@ -26,10 +26,3 @@ class EarlyExitNetworkSegmentor(nn.Module):
                 return x.squeeze(0),False
             x = x.squeeze(0)
             return x,True
-
-
-def main():
-    return  
-
-if __name__ == "main":
-    main()
