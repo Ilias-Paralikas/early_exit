@@ -10,9 +10,18 @@ The function to be exposed is import as follows
 as used as such
 How to Use:
 
-1. Define your model (optinal train it on your dataset)
+1. Define your model (optionally train it on your dataset), as you would in a normal torch model.
 
-2. Define a class that splits your model into nn.Sequentail Subbolocks that, in turn all belong to an nn.Sequential Container, named "self.net" (see demo.ipynb, SplitModel class)
+2. Define a class that splits your model into nn.Sequentail Subbolocks that, in turn all belong to an ```nn.Sequential``` Container, named "self.net" (see demo.ipynb, SplitModel class) 
+
+3. Define the exit layers. (see demo.ipynb, ExitLayers class). The extis are defined as a nn.Module. You can use the same class for all the exits, or different for each exit. Make sure the dimensions match the input that they will receive. 
+
+4. For each exit, infer the output shape and define the exits manually. (see next cell at demo).
+
+5. Define the exits and add them to a ```nn.ModuleList```
+
+6. Call the ```EarlyExitNetwork``` class, with parameters the seperated_models.net and the exits.
+**Important**  : You should provide the sequential part of the model, not the whole model. 
 
 3. Call the function with the following parameters 
 

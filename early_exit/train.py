@@ -4,6 +4,7 @@ import torch.nn as nn
 from typing import Optional
 from .eenet import EarlyExitNetwork
 
+
 def train_model(model:EarlyExitNetwork,
                 loader: torch.utils.data.DataLoader,
                 criterion: nn.Module,
@@ -29,17 +30,16 @@ def train_model(model:EarlyExitNetwork,
         for images,labels in loop:
             images= images.to(device)
             
-            labels = torch.nn.functional.one_hot(labels, num_classes=num_classes).float()
+            labels = torch.nn.functional.one_hot(labels, num_classes=num_classes).float().to(device)
             output = model(images,exit_chosen=exit_chosen)
+            optimizer.zero_grad()
 
             if exit_chosen is None:
-    
-                labels = labels.unsqueeze(1).repeat(1, num_exits, 1)  # Repeat along new dimension
-                labels = labels.view(-1,num_exits*num_classes)
-                output =output.view(-1,num_exits*num_classes)
-            labels = labels.to(device)
-            loss  =criterion(output,labels)
-            optimizer.zero_grad()
+                loss = 0 
+                for i in range(num_exits):
+                    loss += criterion(output[:,i,:],labels)
+            else:
+                loss = criterion(output,labels)
             loss.backward()
             optimizer.step()
             loop.set_postfix(
