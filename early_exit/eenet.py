@@ -26,7 +26,7 @@ class EarlyExitNetwork(nn.Module):
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
         self.network = deepcopy(separated_network).to(device)
-        self.exits = exit_layers
+        self.exits = deepcopy(exit_layers)
         self.len = len(self.network)
 
     def forward(self,x,exit_chosen=None):
