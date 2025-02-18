@@ -1,5 +1,6 @@
 from .seperated_model import SegmentedEarlyExitNetwork
 import torch
+import torch.nn as nn
 
 
 def seperate_networks(eenet,thresholds,confidence_function=None,device='cpu'):
