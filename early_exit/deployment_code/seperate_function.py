@@ -17,7 +17,9 @@ def test_networks(networks,dataset,device=None):
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     correct = 0
     total = len(dataset)
-    number_of_exits_taken = [0]*len(networks)
+    number_of_exits_taken = {}
+    for i in range(len(networks)):
+        number_of_exits_taken[i] = {'correct':0,'total':0}
     with torch.no_grad():
         for images, labels in dataset:
             tensor = images.to(device)
@@ -29,8 +31,9 @@ def test_networks(networks,dataset,device=None):
                 tensor,exit_taken = networks[model_layer](tensor)
                 model_layer +=1
                 
-            number_of_exits_taken[model_layer-1] +=1
+            number_of_exits_taken[model_layer-1]['total'] +=1
             if torch.argmax(tensor) == labels:
                 correct +=1
+                number_of_exits_taken[model_layer-1]['correct'] +=1
                 
     return correct / total,number_of_exits_taken
