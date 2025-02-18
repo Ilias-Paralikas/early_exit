@@ -16,17 +16,15 @@ class EarlyExitNetwork(nn.Module):
     
     def __init__(self,
                  separated_network: nn.Sequential,
-                 exit_layers: nn.ModuleList,
-                 device: Optional[torch.device] = None):
+                 exit_layers: nn.ModuleList):
         super(EarlyExitNetwork, self).__init__()
         # if the network is broken up in n different pieces, the exit_layers should be  n-1
         # as the last exit is the output layers of the original model
         assert len(exit_layers) == len(separated_network)-1
-        if device is None:
-            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        
-        self.network = deepcopy(separated_network).to(device)
+        self.network = deepcopy(separated_network[:-1])
         self.exits = deepcopy(exit_layers)
+        self.exits.append(deepcopy(separated_network[-1]))
+
         self.len = len(self.network)
 
     def forward(self,x,exit_chosen=None):
@@ -44,7 +42,7 @@ class EarlyExitNetwork(nn.Module):
                 outputs.append(early_exit)
             
             # the last exit is part of the original network
-            x = self.network[-1](x)
+            x = self.exits[-1](x)
             outputs.append(x)
             # very carefull with shapes and dimensions, dim =0 is the batch so we concat on dim=1
             return torch.stack(outputs, dim=1)
@@ -52,12 +50,9 @@ class EarlyExitNetwork(nn.Module):
             # if we want only one exit, make sure we ae between 0 and the number of exits
             assert 0<=exit_chosen<self.len
             # itterate over the network until we reach the exit we want
-            for i in range(exit_chosen+1):
+            for i in range(exit_chosen):
                 x = self.network[i](x)
-            # if that exit is the last layer, we just return as it is part of the original network
-            if exit_chosen ==self.len-1:
-                return x
-            # else we return the exit
+
             return self.exits[exit_chosen](x)
 
     
