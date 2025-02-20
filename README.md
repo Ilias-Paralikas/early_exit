@@ -2,12 +2,12 @@ This work was partially support by the ``Trustworthy And Resilient Decentralised
 
 
 
-The function to be exposed is import as follows
+# Contents
+
+This code contains the code needed to modify a torch model into an early exit model.
+One needs some basic pytorch knowledge to implement this. 
 
 
-`from early_exit.get_early_exit import create_networks`
-
-as used as such
 How to Use:
 
 1. Define your model (optionally train it on your dataset), as you would in a normal torch model.
