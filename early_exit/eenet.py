@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 from copy import deepcopy
-from typing import Optional
 
 
 class EarlyExitNetwork(nn.Module):
@@ -34,9 +33,10 @@ class EarlyExitNetwork(nn.Module):
         '''
         if exit_chosen is None:
             outputs = []
-            for i in range(self.len-1):
+            for i in range(self.len):
                 # itterate over the core network
                 x = self.network[i](x)
+                
                 # store the exit in the outputs
                 early_exit = self.exits[i](x)
                 outputs.append(early_exit)
@@ -48,11 +48,12 @@ class EarlyExitNetwork(nn.Module):
             return torch.stack(outputs, dim=1)
         else:
             # if we want only one exit, make sure we ae between 0 and the number of exits
-            assert 0<=exit_chosen<self.len
-            # itterate over the network until we reach the exit we want
-            for i in range(exit_chosen):
+            assert 0<=exit_chosen<=self.len
+            # if we chose a layer other than the last one, we go through the network
+            # if we chose the last one, it does not have a network layer, as it is attached to the exit
+            network_layers = min(exit_chosen,self.len-1)
+            x = self.network[0](x)
+            for i in range(1,network_layers+1):
                 x = self.network[i](x)
 
             return self.exits[exit_chosen](x)
-
-    
