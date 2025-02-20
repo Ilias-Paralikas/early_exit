@@ -7,6 +7,7 @@ This work was partially support by the ``Trustworthy And Resilient Decentralised
 This code contains the code needed to modify a torch model into an early exit model.
 One needs some basic pytorch knowledge to implement this. 
 
+See demo.ipynb for a demonstration.
 
 How to Use:
 
