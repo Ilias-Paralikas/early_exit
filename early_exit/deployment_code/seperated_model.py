@@ -12,6 +12,7 @@ class SegmentedEarlyExitNetwork(nn.Module):
                 self.confidence_function=nn.Softmax(dim=0)
                 
         def forward(self,x):
+            # no batched input
             x = x.unsqueeze(0)
             x = self.network(x)
 
@@ -24,5 +25,6 @@ class SegmentedEarlyExitNetwork(nn.Module):
                     return early_exit,True
                 
                 return x.squeeze(0),False
+            
             x = x.squeeze(0)
             return x,True
